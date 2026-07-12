@@ -44,7 +44,15 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 # ============ CẤU HÌNH ============
-BRANCHES = ["CN1", "CN2 - Gò Vấp", "CN3 - Q12", "CN4", "CN5", "CN6", "CN7"]
+BRANCHES = [
+    "Quận 1: Nguyễn Thị Minh Khai",
+    "Tân Phú: Hà Thị Đát",
+    "Gò Vấp: Quang Trung",
+    "Quận 12: Dương Thị Mười",
+    "Thủ Đức (CN1): Lương Khải Siêu",
+    "Thủ Đức (CN2): Hiệp Bình Chánh",
+    "Quận 9: Nguyễn Văn Tăng",
+]
 SHEET_TAB_NAME = "branch_receipts"
 SHEET_HEADERS = ["record_id", "branch_code", "ncc_name", "date", "item",
                  "qty_received", "photo_url", "submitted_by", "submitted_at"]
@@ -114,16 +122,58 @@ def load_recent_receipts(ws, branch_code, limit=15):
     return df.sort_values("submitted_at", ascending=False).head(limit)
 
 
-# ============ GIAO DIỆN ============
+# ============ ĐĂNG NHẬP THEO CHI NHÁNH ============
+def get_branch_passwords():
+    try:
+        return dict(st.secrets["branch_accounts"])
+    except Exception:
+        # ---- LOCAL DEV MODE: điền mật khẩu test khi chạy local ----
+        return {b: "1234" for b in BRANCHES}
+
+
 st.set_page_config(page_title="ĐMG — Nhập Chứng Từ Nhận Hàng", page_icon="📦", layout="centered")
 
-st.title("📦 Nhập Chứng Từ Nhận Hàng")
-st.caption("Dành cho nhân viên chi nhánh — nhập số lượng thực nhận và tải ảnh giấy giao nhận từ NCC")
+if "authenticated_branch" not in st.session_state:
+    st.session_state.authenticated_branch = None
+
+if st.session_state.authenticated_branch is None:
+    st.title("🔒 Đăng Nhập Chi Nhánh")
+    st.caption("Chọn chi nhánh của bạn và nhập mật khẩu được cấp để tiếp tục")
+
+    login_branch = st.selectbox("Chi nhánh", BRANCHES)
+    login_password = st.text_input("Mật khẩu chi nhánh", type="password")
+    login_btn = st.button("Đăng nhập", type="primary")
+
+    if login_btn:
+        passwords = get_branch_passwords()
+        correct_password = passwords.get(login_branch)
+        if correct_password is not None and login_password == correct_password:
+            st.session_state.authenticated_branch = login_branch
+            st.rerun()
+        else:
+            st.error("Sai mật khẩu cho chi nhánh này. Vui lòng thử lại hoặc liên hệ P.MH.")
+
+    st.stop()  # Không cho chạy tiếp phần bên dưới nếu chưa đăng nhập
+
+
+# ============ GIAO DIỆN ============
+authenticated_branch = st.session_state.authenticated_branch
+
+top_col1, top_col2 = st.columns([4, 1])
+with top_col1:
+    st.title("📦 Nhập Chứng Từ Nhận Hàng")
+with top_col2:
+    if st.button("Đăng xuất"):
+        st.session_state.authenticated_branch = None
+        st.rerun()
+
+st.caption(f"Đang đăng nhập: **{authenticated_branch}** — nhập số lượng thực nhận và tải ảnh giấy giao nhận từ NCC")
 
 with st.form("receipt_form", clear_on_submit=True):
     col1, col2 = st.columns(2)
     with col1:
-        branch_code = st.selectbox("Chi nhánh *", BRANCHES)
+        st.text_input("Chi nhánh *", value=authenticated_branch, disabled=True)
+        branch_code = authenticated_branch
         receipt_date = st.date_input("Ngày nhận hàng *", value=date.today())
     with col2:
         ncc_name = st.text_input("Tên nhà cung cấp (NCC) *", placeholder="VD: Fresh Đại Phát")
@@ -201,9 +251,8 @@ with st.form("receipt_form", clear_on_submit=True):
             st.session_state.receipt_items = [{"item": "", "qty": 0.0}]
 
 st.markdown("---")
-st.subheader("📋 Chứng từ đã gửi gần đây")
+st.subheader(f"📋 Chứng từ đã gửi gần đây — {authenticated_branch}")
 
-view_branch = st.selectbox("Xem theo chi nhánh", BRANCHES, key="view_branch")
 if st.button("🔄 Tải lại danh sách"):
     st.rerun()
 
@@ -211,7 +260,7 @@ try:
     gc = get_google_client()
     sheet_id, imgbb_api_key = get_sheet_id_and_imgbb_key()
     ws = get_worksheet(gc, sheet_id)
-    recent = load_recent_receipts(ws, view_branch)
+    recent = load_recent_receipts(ws, authenticated_branch)
     if recent.empty:
         st.info("Chưa có chứng từ nào cho chi nhánh này.")
     else:
