@@ -129,11 +129,20 @@ def append_receipt_row(ws, row: dict):
 
 
 def load_recent_receipts(ws, branch_code, limit=15):
-    records = ws.get_all_records()
-    df = pd.DataFrame(records)
+    all_values = ws.get_all_values()
+    if len(all_values) <= 1:
+        return pd.DataFrame(columns=SHEET_HEADERS)
+    data_rows = all_values[1:]  # bỏ dòng tiêu đề thật trên Sheet, tự dùng SHEET_HEADERS của code
+    # Cắt/đệm mỗi dòng cho khớp đúng số cột mong đợi, tránh lỗi lệch cột dữ liệu cũ
+    normalized_rows = []
+    for r in data_rows:
+        if len(r) < len(SHEET_HEADERS):
+            r = r + [""] * (len(SHEET_HEADERS) - len(r))
+        normalized_rows.append(r[:len(SHEET_HEADERS)])
+    df = pd.DataFrame(normalized_rows, columns=SHEET_HEADERS)
+    df = df[df["branch_code"] == branch_code]
     if df.empty:
         return df
-    df = df[df["branch_code"] == branch_code]
     return df.sort_values("submitted_at", ascending=False).head(limit)
 
 
