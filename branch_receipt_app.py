@@ -1,6 +1,7 @@
 """
-DMG — Branch Receipt App (Phase 1)
-Chi nhánh nhập: NCC, ngày, mặt hàng, số lượng nhận, ảnh giấy giao nhận.
+DMG — Branch Receipt App (Phase 1 — v2)
+Chi nhánh nhập: Nhóm hàng, NCC (lọc theo nhóm hàng), mặt hàng (lọc theo NCC, tự điền tên + ĐVT),
+số lượng nhận, ảnh giấy giao nhận (không bắt buộc).
 Dữ liệu ghi vào Google Sheet (tab 'branch_receipts'), ảnh lưu qua ImgBB (dịch vụ ảnh miễn phí).
 
 Cách chạy local:
@@ -8,12 +9,11 @@ Cách chạy local:
     streamlit run branch_receipt_app.py
 
 Cách cấu hình (BẮT BUỘC trước khi chạy):
-    1. Tạo 1 Google Sheet mới, đặt tên tùy ý, tạo sẵn 1 tab tên "branch_receipts"
-       với dòng tiêu đề: record_id | branch_code | ncc_name | date | item | qty_received | photo_url | submitted_by | submitted_at
-    2. Tạo 1 Google Cloud Service Account, bật Google Sheets API,
-       tải file credentials JSON, share quyền Editor Sheet trên cho email service account đó.
-    3. Đăng ký lấy API Key miễn phí tại https://api.imgbb.com/ (đăng nhập bằng Google/email, vào mục "About" > "API" để lấy key).
-    4. Deploy lên Streamlit Cloud: dán nội dung JSON vào mục Settings > Secrets theo định dạng TOML bên dưới:
+    1. Tạo 1 Google Sheet mới, tạo sẵn 1 tab tên "branch_receipts" (app sẽ tự tạo cột nếu chưa có).
+    2. Tạo Google Cloud Service Account, bật Google Sheets API, tải file JSON, share Sheet cho email đó (Editor).
+    3. Đăng ký API Key miễn phí tại https://api.imgbb.com/
+    4. File "master_ncc.json" (danh mục Nhóm hàng/NCC/Mã hàng) PHẢI nằm CÙNG THƯ MỤC với file này khi deploy.
+    5. Deploy lên Streamlit Cloud, khai báo Secrets:
 
         [gcp_service_account]
         type = "service_account"
@@ -25,12 +25,12 @@ Cách cấu hình (BẮT BUỘC trước khi chạy):
         token_uri = "https://oauth2.googleapis.com/token"
 
         [app]
-        sheet_id = "DÁN_ID_GOOGLE_SHEET_CỦA_BẠN_VÀO_ĐÂY"
-        imgbb_api_key = "DÁN_API_KEY_IMGBB_VÀO_ĐÂY"
+        sheet_id = "..."
+        imgbb_api_key = "..."
 
-    Khi chạy local (không dùng Streamlit Cloud), có thể thay st.secrets bằng đọc file
-
-    service_account.json trực tiếp — xem phần "LOCAL DEV MODE" bên dưới.
+        [branch_accounts]
+        "Tên chi nhánh 1" = "mat_khau_1"
+        ...
 """
 
 import streamlit as st
@@ -38,8 +38,10 @@ import pandas as pd
 from datetime import datetime, date
 import uuid
 import base64
-import requests
+import json
+import os
 
+import requests
 import gspread
 from google.oauth2.service_account import Credentials
 
@@ -53,25 +55,30 @@ BRANCHES = [
     "Thủ Đức (CN2): Hiệp Bình Chánh",
     "Quận 9: Nguyễn Văn Tăng",
 ]
-SHEET_TAB_NAME = "branch_receipts"
-SHEET_HEADERS = ["record_id", "branch_code", "ncc_name", "date", "item",
-                 "qty_received", "photo_url", "submitted_by", "submitted_at"]
 
-SCOPES = [
-    "https://www.googleapis.com/auth/spreadsheets",
-]
+SHEET_TAB_NAME = "branch_receipts"
+SHEET_HEADERS = ["record_id", "branch_code", "category", "ncc_name", "date",
+                 "item_code", "item_name", "unit", "qty_received",
+                 "photo_url", "submitted_by", "submitted_at"]
+
+SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
+
+MASTER_DATA_PATH = os.path.join(os.path.dirname(__file__), "master_ncc.json")
+
+
+@st.cache_data
+def load_master_data():
+    with open(MASTER_DATA_PATH, encoding="utf-8") as f:
+        return json.load(f)
 
 
 @st.cache_resource
 def get_google_client():
-    """Khởi tạo kết nối Google Sheets từ Streamlit Secrets."""
     try:
         creds_dict = dict(st.secrets["gcp_service_account"])
         creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
     except Exception:
-        # ---- LOCAL DEV MODE: thay bằng đường dẫn file JSON tải từ Google Cloud ----
         creds = Credentials.from_service_account_file("service_account.json", scopes=SCOPES)
-
     gc = gspread.authorize(creds)
     return gc
 
@@ -80,8 +87,14 @@ def get_sheet_id_and_imgbb_key():
     try:
         return st.secrets["app"]["sheet_id"], st.secrets["app"]["imgbb_api_key"]
     except Exception:
-        # ---- LOCAL DEV MODE: điền trực tiếp 2 giá trị này khi test trên máy ----
         return "DÁN_SHEET_ID_KHI_TEST_LOCAL", "DÁN_IMGBB_API_KEY_KHI_TEST_LOCAL"
+
+
+def get_branch_passwords():
+    try:
+        return dict(st.secrets["branch_accounts"])
+    except Exception:
+        return {b: "1234" for b in BRANCHES}
 
 
 def get_worksheet(gc, sheet_id):
@@ -95,7 +108,6 @@ def get_worksheet(gc, sheet_id):
 
 
 def upload_photo_to_imgbb(api_key, file_bytes, filename):
-    """Upload ảnh lên ImgBB (dịch vụ ảnh miễn phí), trả về URL công khai của ảnh."""
     b64_image = base64.b64encode(file_bytes).decode("utf-8")
     resp = requests.post(
         "https://api.imgbb.com/1/upload",
@@ -123,14 +135,6 @@ def load_recent_receipts(ws, branch_code, limit=15):
 
 
 # ============ ĐĂNG NHẬP THEO CHI NHÁNH ============
-def get_branch_passwords():
-    try:
-        return dict(st.secrets["branch_accounts"])
-    except Exception:
-        # ---- LOCAL DEV MODE: điền mật khẩu test khi chạy local ----
-        return {b: "1234" for b in BRANCHES}
-
-
 st.set_page_config(page_title="ĐMG — Nhập Chứng Từ Nhận Hàng", page_icon="📦", layout="centered")
 
 if "authenticated_branch" not in st.session_state:
@@ -153,11 +157,12 @@ if st.session_state.authenticated_branch is None:
         else:
             st.error("Sai mật khẩu cho chi nhánh này. Vui lòng thử lại hoặc liên hệ P.MH.")
 
-    st.stop()  # Không cho chạy tiếp phần bên dưới nếu chưa đăng nhập
+    st.stop()
 
 
-# ============ GIAO DIỆN ============
+# ============ GIAO DIỆN CHÍNH ============
 authenticated_branch = st.session_state.authenticated_branch
+master = load_master_data()
 
 top_col1, top_col2 = st.columns([4, 1])
 with top_col1:
@@ -167,88 +172,120 @@ with top_col2:
         st.session_state.authenticated_branch = None
         st.rerun()
 
-st.caption(f"Đang đăng nhập: **{authenticated_branch}** — nhập số lượng thực nhận và tải ảnh giấy giao nhận từ NCC")
+st.caption(f"Đang đăng nhập: **{authenticated_branch}** — nhập số lượng thực nhận, ảnh giấy giao nhận không bắt buộc")
 
-with st.form("receipt_form", clear_on_submit=True):
-    col1, col2 = st.columns(2)
-    with col1:
-        st.text_input("Chi nhánh *", value=authenticated_branch, disabled=True)
-        branch_code = authenticated_branch
-        receipt_date = st.date_input("Ngày nhận hàng *", value=date.today())
-    with col2:
-        ncc_name = st.text_input("Tên nhà cung cấp (NCC) *", placeholder="VD: Fresh Đại Phát")
-        submitted_by = st.text_input("Tên người nhập *", placeholder="Tên của bạn")
+# --- Không dùng st.form ở đây: cần rerun ngay khi đổi Nhóm hàng / NCC để lọc dropdown tiếp theo ---
+col1, col2 = st.columns(2)
+with col1:
+    st.text_input("Chi nhánh *", value=authenticated_branch, disabled=True)
+    receipt_date = st.date_input("Ngày nhận hàng *", value=date.today())
+with col2:
+    submitted_by = st.text_input("Tên người nhập *", placeholder="Tên của bạn", key="submitted_by_input")
 
-    st.markdown("---")
-    st.markdown("**Danh sách mặt hàng nhận được** — thêm từng dòng")
+st.markdown("---")
+cat_col, ncc_col = st.columns(2)
+with cat_col:
+    category = st.selectbox("Nhóm hàng *", master["categories"], key="category_select")
+with ncc_col:
+    ncc_options = master["cat_to_ncc"].get(category, [])
+    ncc_name = st.selectbox("Nhà cung cấp (NCC) *", ncc_options, key="ncc_select")
 
-    if "receipt_items" not in st.session_state:
-        st.session_state.receipt_items = [{"item": "", "qty": 0.0}]
+items_key = f"{category}||{ncc_name}"
+available_items = master["catncc_to_items"].get(items_key, [])
+item_code_options = [it["code"] for it in available_items]
+item_lookup = {it["code"]: it for it in available_items}
 
-    for i, it in enumerate(st.session_state.receipt_items):
-        c1, c2 = st.columns([3, 1])
-        with c1:
-            st.session_state.receipt_items[i]["item"] = st.text_input(
-                f"Mặt hàng #{i+1}", value=it["item"], key=f"item_{i}"
+st.markdown("---")
+st.markdown("**Danh sách mặt hàng nhận được** — thêm từng dòng")
+
+if "receipt_items" not in st.session_state:
+    st.session_state.receipt_items = [{"code": None, "qty": 0.0}]
+
+if not item_code_options:
+    st.warning("Không tìm thấy mã hàng nào cho NCC này trong danh mục — vui lòng báo P.MH bổ sung vào Master_NCC.")
+
+for i, it in enumerate(st.session_state.receipt_items):
+    c1, c2, c3 = st.columns([2, 2, 1])
+    selected_code = None
+    with c1:
+        current_code = it["code"] if it["code"] in item_code_options else (item_code_options[0] if item_code_options else None)
+        if item_code_options:
+            selected_code = st.selectbox(
+                f"Mã hàng #{i+1}", item_code_options,
+                index=item_code_options.index(current_code) if current_code in item_code_options else 0,
+                key=f"item_code_{i}",
             )
-        with c2:
-            st.session_state.receipt_items[i]["qty"] = st.number_input(
-                f"Số lượng #{i+1}", value=it["qty"], min_value=0.0, step=0.1, key=f"qty_{i}"
-            )
+        st.session_state.receipt_items[i]["code"] = selected_code
+    with c2:
+        if selected_code:
+            info = item_lookup.get(selected_code, {})
+            st.text_input(f"Tên SP #{i+1}", value=f"{info.get('name','')} ({info.get('unit','')})", disabled=True, key=f"item_name_{i}")
+    with c3:
+        st.session_state.receipt_items[i]["qty"] = st.number_input(
+            f"Số lượng #{i+1}", value=it["qty"], min_value=0.0, step=0.1, key=f"item_qty_{i}"
+        )
 
-    add_col, _ = st.columns([1, 3])
-    add_item = st.form_submit_button("➕ Thêm mặt hàng")
-
-    photo = st.file_uploader("Ảnh giấy giao nhận (chụp rõ, có chữ ký nếu có) *", type=["jpg", "jpeg", "png"])
-
-    submit = st.form_submit_button("✅ Gửi chứng từ", type="primary")
-
-    if add_item:
-        st.session_state.receipt_items.append({"item": "", "qty": 0.0})
+btn_col1, btn_col2 = st.columns([1, 1])
+with btn_col1:
+    if st.button("➕ Thêm mặt hàng"):
+        st.session_state.receipt_items.append({"code": None, "qty": 0.0})
+        st.rerun()
+with btn_col2:
+    if len(st.session_state.receipt_items) > 1 and st.button("➖ Xóa dòng cuối"):
+        st.session_state.receipt_items.pop()
         st.rerun()
 
-    if submit:
-        errors = []
-        if not ncc_name.strip():
-            errors.append("Chưa nhập tên NCC.")
-        if not submitted_by.strip():
-            errors.append("Chưa nhập tên người nhập.")
-        if photo is None:
-            errors.append("Chưa tải ảnh giấy giao nhận.")
-        valid_items = [it for it in st.session_state.receipt_items if it["item"].strip() and it["qty"] > 0]
-        if not valid_items:
-            errors.append("Cần ít nhất 1 mặt hàng có số lượng > 0.")
+st.markdown("---")
+photo = st.file_uploader(
+    "Ảnh giấy giao nhận (không bắt buộc — có thể bổ sung sau)",
+    type=["jpg", "jpeg", "png"],
+)
 
-        if errors:
-            for e in errors:
-                st.error(e)
-        else:
-            with st.spinner("Đang lưu chứng từ..."):
-                gc = get_google_client()
-                sheet_id, imgbb_api_key = get_sheet_id_and_imgbb_key()
-                ws = get_worksheet(gc, sheet_id)
+if st.button("✅ Gửi chứng từ", type="primary"):
+    errors = []
+    if not submitted_by.strip():
+        errors.append("Chưa nhập tên người nhập.")
+    valid_items = [it for it in st.session_state.receipt_items if it["code"] and it["qty"] > 0]
+    if not valid_items:
+        errors.append("Cần ít nhất 1 mặt hàng có chọn mã hàng và số lượng > 0.")
 
+    if errors:
+        for e in errors:
+            st.error(e)
+    else:
+        with st.spinner("Đang lưu chứng từ..."):
+            gc = get_google_client()
+            sheet_id, imgbb_api_key = get_sheet_id_and_imgbb_key()
+            ws = get_worksheet(gc, sheet_id)
+
+            photo_url = ""
+            if photo is not None:
                 photo_bytes = photo.read()
-                filename = f"{branch_code}_{ncc_name}_{receipt_date}_{uuid.uuid4().hex[:6]}.jpg"
+                filename = f"{authenticated_branch}_{ncc_name}_{receipt_date}_{uuid.uuid4().hex[:6]}.jpg"
                 photo_url = upload_photo_to_imgbb(imgbb_api_key, photo_bytes, filename)
 
-                now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                for it in valid_items:
-                    row = {
-                        "record_id": uuid.uuid4().hex[:10],
-                        "branch_code": branch_code,
-                        "ncc_name": ncc_name.strip(),
-                        "date": str(receipt_date),
-                        "item": it["item"].strip(),
-                        "qty_received": it["qty"],
-                        "photo_url": photo_url,
-                        "submitted_by": submitted_by.strip(),
-                        "submitted_at": now_str,
-                    }
-                    append_receipt_row(ws, row)
+            now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            for it in valid_items:
+                info = item_lookup.get(it["code"], {})
+                row = {
+                    "record_id": uuid.uuid4().hex[:10],
+                    "branch_code": authenticated_branch,
+                    "category": category,
+                    "ncc_name": ncc_name,
+                    "date": str(receipt_date),
+                    "item_code": it["code"],
+                    "item_name": info.get("name", ""),
+                    "unit": info.get("unit", ""),
+                    "qty_received": it["qty"],
+                    "photo_url": photo_url,
+                    "submitted_by": submitted_by.strip(),
+                    "submitted_at": now_str,
+                }
+                append_receipt_row(ws, row)
 
-            st.success(f"Đã gửi {len(valid_items)} dòng chứng từ cho {ncc_name} — chi nhánh {branch_code}.")
-            st.session_state.receipt_items = [{"item": "", "qty": 0.0}]
+        st.success(f"Đã gửi {len(valid_items)} dòng chứng từ cho {ncc_name} — chi nhánh {authenticated_branch}.")
+        st.session_state.receipt_items = [{"code": None, "qty": 0.0}]
+        st.rerun()
 
 st.markdown("---")
 st.subheader(f"📋 Chứng từ đã gửi gần đây — {authenticated_branch}")
@@ -265,7 +302,7 @@ try:
         st.info("Chưa có chứng từ nào cho chi nhánh này.")
     else:
         st.dataframe(
-            recent[["date", "ncc_name", "item", "qty_received", "submitted_by", "submitted_at"]],
+            recent[["date", "category", "ncc_name", "item_code", "item_name", "unit", "qty_received", "submitted_by", "submitted_at"]],
             use_container_width=True, hide_index=True,
         )
 except Exception as e:
