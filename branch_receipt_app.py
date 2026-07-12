@@ -101,12 +101,15 @@ def get_worksheet(gc, sheet_id):
     sh = gc.open_by_key(sheet_id)
     try:
         ws = sh.worksheet(SHEET_TAB_NAME)
-        existing_header = ws.row_values(1)
-        if existing_header != SHEET_HEADERS:
-            ws.update(values=[SHEET_HEADERS], range_name="A1")
+        if not st.session_state.get("_header_checked", False):
+            existing_header = ws.row_values(1)
+            if existing_header != SHEET_HEADERS:
+                ws.update(values=[SHEET_HEADERS], range_name="A1")
+            st.session_state["_header_checked"] = True
     except gspread.WorksheetNotFound:
         ws = sh.add_worksheet(title=SHEET_TAB_NAME, rows=1000, cols=len(SHEET_HEADERS))
         ws.append_row(SHEET_HEADERS)
+        st.session_state["_header_checked"] = True
     return ws
 
 
@@ -266,39 +269,42 @@ if st.button("✅ Gửi chứng từ", type="primary"):
         for e in errors:
             st.error(e)
     else:
-        with st.spinner("Đang lưu chứng từ..."):
-            gc = get_google_client()
-            sheet_id, imgbb_api_key = get_sheet_id_and_imgbb_key()
-            ws = get_worksheet(gc, sheet_id)
+        try:
+            with st.spinner("Đang lưu chứng từ..."):
+                gc = get_google_client()
+                sheet_id, imgbb_api_key = get_sheet_id_and_imgbb_key()
+                ws = get_worksheet(gc, sheet_id)
 
-            photo_url = ""
-            if photo is not None:
-                photo_bytes = photo.read()
-                filename = f"{authenticated_branch}_{ncc_name}_{receipt_date}_{uuid.uuid4().hex[:6]}.jpg"
-                photo_url = upload_photo_to_imgbb(imgbb_api_key, photo_bytes, filename)
+                photo_url = ""
+                if photo is not None:
+                    photo_bytes = photo.read()
+                    filename = f"{authenticated_branch}_{ncc_name}_{receipt_date}_{uuid.uuid4().hex[:6]}.jpg"
+                    photo_url = upload_photo_to_imgbb(imgbb_api_key, photo_bytes, filename)
 
-            now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            for it in valid_items:
-                info = item_lookup.get(it["code"], {})
-                row = {
-                    "record_id": uuid.uuid4().hex[:10],
-                    "branch_code": authenticated_branch,
-                    "category": category,
-                    "ncc_name": ncc_name,
-                    "date": str(receipt_date),
-                    "item_code": it["code"],
-                    "item_name": info.get("name", ""),
-                    "unit": info.get("unit", ""),
-                    "qty_received": it["qty"],
-                    "photo_url": photo_url,
-                    "submitted_by": submitted_by.strip(),
-                    "submitted_at": now_str,
-                }
-                append_receipt_row(ws, row)
+                now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                for it in valid_items:
+                    info = item_lookup.get(it["code"], {})
+                    row = {
+                        "record_id": uuid.uuid4().hex[:10],
+                        "branch_code": authenticated_branch,
+                        "category": category,
+                        "ncc_name": ncc_name,
+                        "date": str(receipt_date),
+                        "item_code": it["code"],
+                        "item_name": info.get("name", ""),
+                        "unit": info.get("unit", ""),
+                        "qty_received": it["qty"],
+                        "photo_url": photo_url,
+                        "submitted_by": submitted_by.strip(),
+                        "submitted_at": now_str,
+                    }
+                    append_receipt_row(ws, row)
 
-        st.success(f"Đã gửi {len(valid_items)} dòng chứng từ cho {ncc_name} — chi nhánh {authenticated_branch}.")
-        st.session_state.receipt_items = [{"code": None, "qty": 0.0}]
-        st.rerun()
+            st.success(f"Đã gửi {len(valid_items)} dòng chứng từ cho {ncc_name} — chi nhánh {authenticated_branch}.")
+            st.session_state.receipt_items = [{"code": None, "qty": 0.0}]
+            st.rerun()
+        except Exception as e:
+            st.error(f"⚠️ Có lỗi xảy ra khi lưu chứng từ, vui lòng thử lại hoặc báo P.MH. Chi tiết lỗi (cho việc debug): {e}")
 
 st.markdown("---")
 st.subheader(f"📋 Chứng từ đã gửi gần đây — {authenticated_branch}")
