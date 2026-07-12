@@ -219,7 +219,8 @@ for i, it in enumerate(st.session_state.receipt_items):
     with c2:
         if selected_code:
             info = item_lookup.get(selected_code, {})
-            st.text_input(f"Tên SP #{i+1}", value=f"{info.get('name','')} ({info.get('unit','')})", disabled=True, key=f"item_name_{i}")
+            st.markdown(f"**Tên SP #{i+1}**")
+            st.info(f"{info.get('name','(chưa rõ tên)')} — ĐVT: {info.get('unit','?')}")
     with c3:
         st.session_state.receipt_items[i]["qty"] = st.number_input(
             f"Số lượng #{i+1}", value=it["qty"], min_value=0.0, step=0.1, key=f"item_qty_{i}"
