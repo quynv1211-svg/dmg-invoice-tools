@@ -36,6 +36,9 @@ Cách cấu hình (BẮT BUỘC trước khi chạy):
 import streamlit as st
 import pandas as pd
 from datetime import datetime, date
+from zoneinfo import ZoneInfo
+
+VN_TZ = ZoneInfo("Asia/Ho_Chi_Minh")
 import uuid
 import base64
 import json
@@ -197,7 +200,7 @@ if st.session_state.get("last_submit_message"):
 col1, col2 = st.columns(2)
 with col1:
     st.text_input("Chi nhánh *", value=authenticated_branch, disabled=True)
-    receipt_date = st.date_input("Ngày nhận hàng *", value=date.today())
+    receipt_date = st.date_input("Ngày nhận hàng *", value=datetime.now(VN_TZ).date())
 with col2:
     submitted_by = st.text_input("Tên người nhập *", placeholder="Tên của bạn", key="submitted_by_input")
 
@@ -297,7 +300,7 @@ if st.button("✅ Gửi chứng từ", type="primary"):
                 else:
                     print("[DEBUG] Không có ảnh, bỏ qua upload", flush=True)
 
-                now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                now_str = datetime.now(VN_TZ).strftime("%Y-%m-%d %H:%M:%S")
                 for it in valid_items:
                     info = item_lookup.get(it["code"], {})
                     row = {
