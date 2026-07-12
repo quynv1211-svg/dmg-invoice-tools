@@ -132,17 +132,17 @@ with st.form("receipt_form", clear_on_submit=True):
     st.markdown("---")
     st.markdown("**Danh sách mặt hàng nhận được** — thêm từng dòng")
 
-    if "items" not in st.session_state:
-        st.session_state.items = [{"item": "", "qty": 0.0}]
+    if "receipt_items" not in st.session_state:
+        st.session_state.receipt_items = [{"item": "", "qty": 0.0}]
 
-    for i, it in enumerate(st.session_state.items):
+    for i, it in enumerate(st.session_state.receipt_items):
         c1, c2 = st.columns([3, 1])
         with c1:
-            st.session_state.items[i]["item"] = st.text_input(
+            st.session_state.receipt_items[i]["item"] = st.text_input(
                 f"Mặt hàng #{i+1}", value=it["item"], key=f"item_{i}"
             )
         with c2:
-            st.session_state.items[i]["qty"] = st.number_input(
+            st.session_state.receipt_items[i]["qty"] = st.number_input(
                 f"Số lượng #{i+1}", value=it["qty"], min_value=0.0, step=0.1, key=f"qty_{i}"
             )
 
@@ -154,7 +154,7 @@ with st.form("receipt_form", clear_on_submit=True):
     submit = st.form_submit_button("✅ Gửi chứng từ", type="primary")
 
     if add_item:
-        st.session_state.items.append({"item": "", "qty": 0.0})
+        st.session_state.receipt_items.append({"item": "", "qty": 0.0})
         st.rerun()
 
     if submit:
@@ -165,7 +165,7 @@ with st.form("receipt_form", clear_on_submit=True):
             errors.append("Chưa nhập tên người nhập.")
         if photo is None:
             errors.append("Chưa tải ảnh giấy giao nhận.")
-        valid_items = [it for it in st.session_state.items if it["item"].strip() and it["qty"] > 0]
+        valid_items = [it for it in st.session_state.receipt_items if it["item"].strip() and it["qty"] > 0]
         if not valid_items:
             errors.append("Cần ít nhất 1 mặt hàng có số lượng > 0.")
 
@@ -198,7 +198,7 @@ with st.form("receipt_form", clear_on_submit=True):
                     append_receipt_row(ws, row)
 
             st.success(f"Đã gửi {len(valid_items)} dòng chứng từ cho {ncc_name} — chi nhánh {branch_code}.")
-            st.session_state.items = [{"item": "", "qty": 0.0}]
+            st.session_state.receipt_items = [{"item": "", "qty": 0.0}]
 
 st.markdown("---")
 st.subheader("📋 Chứng từ đã gửi gần đây")
