@@ -128,7 +128,7 @@ def upload_photo_to_imgbb(api_key, file_bytes, filename):
 
 
 def append_receipt_row(ws, row: dict):
-    ws.append_row([row.get(h, "") for h in SHEET_HEADERS])
+    ws.append_row([row.get(h, "") for h in SHEET_HEADERS], table_range="A1")
 
 
 def load_recent_receipts(ws, branch_code, limit=15):
@@ -188,6 +188,10 @@ with top_col2:
         st.rerun()
 
 st.caption(f"Đang đăng nhập: **{authenticated_branch}** — nhập số lượng thực nhận, ảnh giấy giao nhận không bắt buộc")
+
+if st.session_state.get("last_submit_message"):
+    st.success(st.session_state["last_submit_message"])
+    del st.session_state["last_submit_message"]
 
 # --- Không dùng st.form ở đây: cần rerun ngay khi đổi Nhóm hàng / NCC để lọc dropdown tiếp theo ---
 col1, col2 = st.columns(2)
@@ -315,7 +319,7 @@ if st.button("✅ Gửi chứng từ", type="primary"):
                     print("[DEBUG] append_receipt_row xong", flush=True)
 
             print("[DEBUG] Toàn bộ khối try thành công, chuẩn bị hiện success", flush=True)
-            st.success(f"Đã gửi {len(valid_items)} dòng chứng từ cho {ncc_name} — chi nhánh {authenticated_branch}.")
+            st.session_state["last_submit_message"] = f"Đã gửi {len(valid_items)} dòng chứng từ cho {ncc_name} — chi nhánh {authenticated_branch}."
             st.session_state.receipt_items = [{"code": None, "qty": 0.0}]
             st.rerun()
         except Exception as e:
