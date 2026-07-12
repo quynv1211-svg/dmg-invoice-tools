@@ -1,0 +1,1389 @@
+{
+ "categories": [
+  "CCDC",
+  "Drink",
+  "NVL",
+  "VTTH"
+ ],
+ "cat_to_ncc": {
+  "VTTH": [
+   "CÔNG TY TNHH SẢN XUẤT THƯỢNG NGUYÊN",
+   "GAS NĂM SAO",
+   "HBCO",
+   "Hoàng Kim Tín",
+   "Huy Hòa",
+   "Hạnh Phúc",
+   "Minh Tuệ",
+   "NPP MINH THẢO",
+   "Nam Sơn",
+   "Namilux",
+   "Nano",
+   "Ngọc Oanh",
+   "Paper Store",
+   "Phú Thịnh",
+   "Sao Việt",
+   "TB Vina",
+   "Trung Tiến"
+  ],
+  "Drink": [
+   "Coca",
+   "CÔNG TY TNHH DTPT TMDV  TUẤN PHONG",
+   "CÔNG TY TNHH ĐT VÀ PHÁT TRIỂN TÂM TÍN NGHĨA",
+   "GAS NĂM SAO",
+   "Hoàng Đào",
+   "Huỳnh Huy",
+   "Minh Tâm",
+   "Nano",
+   "Ngân Thy",
+   "Sơn Bích",
+   "Thái Thịnh",
+   "Thảo Tiên"
+  ],
+  "CCDC": [
+   "CÔNG TY TNHH SẢN XUẤT CƠ KHÍ XUẤT NHẬP KHẨU PHƯỚC THỊNH TIẾN",
+   "Mega Eco",
+   "Minh Tuệ",
+   "Namilux",
+   "Nano",
+   "Nhựa Tốt",
+   "Wood one"
+  ],
+  "NVL": [
+   "An Phát Thành",
+   "CRAFTSMANSHIP",
+   "CÔNG TY HÀ THANH",
+   "CÔNG TY TNHH THUỶ HẢI SẢN TRƯƠNG HUY",
+   "Cát Tiên",
+   "Hưng Thịnh",
+   "Hướng Dương",
+   "Khánh Hân",
+   "Kim Anh",
+   "Kim Ngân",
+   "Liên An",
+   "Lộc Thảo Phát",
+   "Mega Eco",
+   "Minh Trí",
+   "NS Kiên Long",
+   "Nam Việt Sin",
+   "Phương Dung",
+   "Quang Tính",
+   "Song Phương",
+   "Thành Phát",
+   "Tiến Phát",
+   "Tuấn Thanh",
+   "Vĩnh Tân",
+   "Yến Phát",
+   "Ánh Dương Xanh",
+   "Đệ Nhất",
+   "Đồng Xanh"
+  ]
+ },
+ "catncc_to_items": {
+  "VTTH||GAS NĂM SAO": [
+   {
+    "code": "VTTH001",
+    "name": "Gas lớn",
+    "unit": "Bình"
+   }
+  ],
+  "Drink||GAS NĂM SAO": [
+   {
+    "code": "DU011",
+    "name": "Nước suối Dasani",
+    "unit": "Chai"
+   },
+   {
+    "code": "DU007",
+    "name": "Nước Ngọt Coca Cola",
+    "unit": "lon"
+   },
+   {
+    "code": "DU009",
+    "name": "Nước ngọt Sprite",
+    "unit": "lon"
+   }
+  ],
+  "CCDC||Namilux": [
+   {
+    "code": "CCDC001",
+    "name": "Bếp ga",
+    "unit": "bếp"
+   }
+  ],
+  "VTTH||Namilux": [
+   {
+    "code": "VTTH013",
+    "name": "Lon gas Namilux 250gr(GD)",
+    "unit": "lon"
+   }
+  ],
+  "VTTH||TB Vina": [
+   {
+    "code": "VTTH013",
+    "name": "Lon gas Namilux 250gr(GD)",
+    "unit": "lon"
+   }
+  ],
+  "NVL||Vĩnh Tân": [
+   {
+    "code": "NVL067",
+    "name": "Sườn chìa",
+    "unit": "kg"
+   }
+  ],
+  "Drink||Ngân Thy": [
+   {
+    "code": "DU011",
+    "name": "Nước suối Dasani",
+    "unit": "Chai"
+   },
+   {
+    "code": "DU004",
+    "name": "Bia Tiger Bạc (Cao) 330ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU007",
+    "name": "Nước Ngọt Coca Cola",
+    "unit": "lon"
+   }
+  ],
+  "NVL||CÔNG TY HÀ THANH": [
+   {
+    "code": "NVLK049",
+    "name": "Dầu OLITA PLUS",
+    "unit": "can"
+   }
+  ],
+  "Drink||Thái Thịnh": [
+   {
+    "code": "DU001",
+    "name": "Bia Ken (Lùn) 250ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU002",
+    "name": "Bia Ken Bạc (Cao) 330ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU003",
+    "name": "Bia Sài Gòn Xanh",
+    "unit": "lon"
+   },
+   {
+    "code": "DU004",
+    "name": "Bia Tiger Bạc (Cao) 330ml",
+    "unit": "lon"
+   }
+  ],
+  "Drink||Sơn Bích": [
+   {
+    "code": "DU001",
+    "name": "Bia Ken (Lùn) 250ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU003",
+    "name": "Bia Sài Gòn Xanh",
+    "unit": "lon"
+   },
+   {
+    "code": "DU004",
+    "name": "Bia Tiger Bạc (Cao) 330ml",
+    "unit": "lon"
+   }
+  ],
+  "NVL||Ánh Dương Xanh": [
+   {
+    "code": "NVL067",
+    "name": "Sườn chìa",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL087",
+    "name": "Xương ống nóng",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL084",
+    "name": "Xương ống lạnh",
+    "unit": "kg"
+   }
+  ],
+  "CCDC||Minh Tuệ": [
+   {
+    "code": "CCDC069",
+    "name": "Bộ cây lau sàn C204",
+    "unit": "Bộ"
+   },
+   {
+    "code": "CCDC0254",
+    "name": "Xe dọn thức ăn",
+    "unit": "Bộ"
+   },
+   {
+    "code": "CCDC0257",
+    "name": "Bìa còng",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0263",
+    "name": "Bình rót 2 lít",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0107",
+    "name": "Bình thủy tinh",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0281",
+    "name": "Bộ dụng cụ sửa chữa",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0169",
+    "name": "Bộ lưu mẫu thức ăn",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0249",
+    "name": "Búa đập thịt",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0251",
+    "name": "Ca đong cỡ 2",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC056",
+    "name": "Cây cào nước",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0260",
+    "name": "Cây ghim hóa đơn",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0244",
+    "name": "Cây mài dao",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0250",
+    "name": "Cây vét silicon",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0252",
+    "name": "Chảo nhôm 60cm",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0253",
+    "name": "Chảo sắt 60cm",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0255",
+    "name": "Chổi chà sàn",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC074",
+    "name": "Chổi dừa",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC055",
+    "name": "Chổi màu cán inox",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0279",
+    "name": "Công nhựa",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC076",
+    "name": "Cước nhôm",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0245",
+    "name": "Đá mài dao",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0248",
+    "name": "Dao bào",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0171",
+    "name": "Dao cán vàng",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0242",
+    "name": "Dao cắt cán đen",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0243",
+    "name": "Dao cắt cán đỏ",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC01027",
+    "name": "Dao chặt",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC045",
+    "name": "Dao tỉa hành",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0267",
+    "name": "Đồng hồ bấm giờ",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0268",
+    "name": "Đồng hồ treo tường",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0280",
+    "name": "Ghế nhựa thấp",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0172",
+    "name": "Hộp inox có nắp",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC057",
+    "name": "Kéo bếp đa năng 08A",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC075",
+    "name": "Khăn lau",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0256",
+    "name": "Kim bấm",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC024",
+    "name": "Ky rác C- 019C",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0265",
+    "name": "Mâm inox 35x50x5cm",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0266",
+    "name": "Mâm inox 40x60x5cm",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0108",
+    "name": "Mẹt tre",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0161",
+    "name": "Pallet",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC080",
+    "name": "Phễu",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC077",
+    "name": "Rửa chén lưới",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0275",
+    "name": "Tab bill tính tiền",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0272",
+    "name": "Tạp dề bếp",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0273",
+    "name": "Tạp dề rửa chén",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC00107",
+    "name": "Thảm rối",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0262",
+    "name": "Thảm rối",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0261",
+    "name": "Thanh kẹp hóa đơn",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0277",
+    "name": "Thùng chữ nhật trong suốt 35L",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0276",
+    "name": "Thùng đồ công nghiệp có nắp màu đỏ",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0264",
+    "name": "Túi vải lọc",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0274",
+    "name": "Ủng cao su",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0247",
+    "name": "Vá lỗ",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0119",
+    "name": "Vá lưới lọc dầu",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0246",
+    "name": "Vá vợt bọt",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0116",
+    "name": "Vá vợt xương",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0278",
+    "name": "Xe nhựa dọn đồ dơ",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0174",
+    "name": "Xẻng khuấy",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0121",
+    "name": "Xô đá inon430",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC070",
+    "name": "Xô nhựa",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0241",
+    "name": "Xúc đá inox",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0113",
+    "name": "Chổi cây quét nhà",
+    "unit": "cây"
+   },
+   {
+    "code": "CCDC00098",
+    "name": "Nước lau đồ gỗ Suzy",
+    "unit": "Chai"
+   },
+   {
+    "code": "CCDC0270",
+    "name": "Nước lau đồ gỗ Suzy",
+    "unit": "Chai"
+   },
+   {
+    "code": "CCDC0271",
+    "name": "Tem hạn sử dụng",
+    "unit": "cuộn"
+   },
+   {
+    "code": "CCDC00258",
+    "name": "Bao tay cao su",
+    "unit": "đôi"
+   },
+   {
+    "code": "CCDC0122",
+    "name": "Bao tay cao su",
+    "unit": "đôi"
+   },
+   {
+    "code": "CCDC0269",
+    "name": "Tem lưu mẫu",
+    "unit": "tờ"
+   },
+   {
+    "code": "CCDC0258",
+    "name": "Giấy A4",
+    "unit": "xấp"
+   },
+   {
+    "code": "CCDC0259",
+    "name": "Giấy A5",
+    "unit": "xấp"
+   }
+  ],
+  "VTTH||Minh Tuệ": [
+   {
+    "code": "VTTH004",
+    "name": "Nước lau bàn",
+    "unit": "Chai"
+   }
+  ],
+  "NVL||CRAFTSMANSHIP": [
+   {
+    "code": "NVLK049",
+    "name": "Dầu OLITA PLUS",
+    "unit": "can"
+   }
+  ],
+  "VTTH||Hạnh Phúc": [
+   {
+    "code": "VTTH001",
+    "name": "Gas lớn",
+    "unit": "Bình"
+   }
+  ],
+  "Drink||CÔNG TY TNHH ĐT VÀ PHÁT TRIỂN TÂM TÍN NGHĨA": [
+   {
+    "code": "DU001",
+    "name": "Bia Ken (Lùn) 250ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU002",
+    "name": "Bia Ken Bạc (Cao) 330ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU003",
+    "name": "Bia Sài Gòn Xanh",
+    "unit": "lon"
+   },
+   {
+    "code": "DU004",
+    "name": "Bia Tiger Bạc (Cao) 330ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU006",
+    "name": "Bia Tiger Nâu 330ml",
+    "unit": "lon"
+   }
+  ],
+  "Drink||CÔNG TY TNHH DTPT TMDV  TUẤN PHONG": [
+   {
+    "code": "DU001",
+    "name": "Bia Ken (Lùn) 250ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU002",
+    "name": "Bia Ken Bạc (Cao) 330ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU004",
+    "name": "Bia Tiger Bạc (Cao) 330ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU006",
+    "name": "Bia Tiger Nâu 330ml",
+    "unit": "lon"
+   }
+  ],
+  "VTTH||Sao Việt": [
+   {
+    "code": "VTTH001",
+    "name": "Gas lớn",
+    "unit": "Bình"
+   }
+  ],
+  "CCDC||Nano": [
+   {
+    "code": "CCDC0112",
+    "name": "Hộp khăn giấy gỗ",
+    "unit": "Cái"
+   }
+  ],
+  "VTTH||Nano": [
+   {
+    "code": "VTTH014",
+    "name": "Giấy vệ sinh",
+    "unit": "cuộn"
+   },
+   {
+    "code": "VTTH039",
+    "name": "Giấy vệ sinh cuộn lớn 700g",
+    "unit": "cuộn"
+   },
+   {
+    "code": "VTTH038",
+    "name": "Khăn giấy rút 400 tờ",
+    "unit": "Gói"
+   }
+  ],
+  "Drink||Nano": [
+   {
+    "code": "DU005",
+    "name": "Giấy vệ sinh cuộn lớn 700g",
+    "unit": "lon"
+   }
+  ],
+  "Drink||Minh Tâm": [
+   {
+    "code": "DU001",
+    "name": "Bia Ken (Lùn) 250ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU002",
+    "name": "Bia Ken Bạc (Cao) 330ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU003",
+    "name": "Bia Sài Gòn Xanh",
+    "unit": "lon"
+   },
+   {
+    "code": "DU004",
+    "name": "Bia Tiger Bạc (Cao) 330ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU006",
+    "name": "Bia Tiger Nâu 330ml",
+    "unit": "lon"
+   }
+  ],
+  "NVL||Hưng Thịnh": [
+   {
+    "code": "NVLK026",
+    "name": "Nước mắm 40 độ (5 lít)",
+    "unit": "Bình"
+   },
+   {
+    "code": "NVLK042",
+    "name": "NƯỚC MẮM CÁ CƠM NHĨ 38N CHAI 200ML",
+    "unit": "Chai"
+   }
+  ],
+  "CCDC||Mega Eco": [
+   {
+    "code": "CCDC003",
+    "name": "Đĩa vuông 25",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC00506",
+    "name": "Đĩa vuông 25",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC00080",
+    "name": "Khay CNC",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0289",
+    "name": "Khay CNC",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC00081",
+    "name": "Khay CNS",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0288",
+    "name": "Khay CNS",
+    "unit": "Cái"
+   }
+  ],
+  "NVL||Mega Eco": [
+   {
+    "code": "NVLK018",
+    "name": "Khay CNS",
+    "unit": "Cái"
+   }
+  ],
+  "NVL||Yến Phát": [
+   {
+    "code": "NVL067",
+    "name": "Sườn chìa",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL087",
+    "name": "Xương ống nóng",
+    "unit": "kg"
+   }
+  ],
+  "Drink||Coca": [
+   {
+    "code": "DU011",
+    "name": "Nước suối Dasani",
+    "unit": "Chai"
+   },
+   {
+    "code": "DU005",
+    "name": "Nước Ngọt Coca Cola",
+    "unit": "lon"
+   },
+   {
+    "code": "DU007",
+    "name": "Nước Ngọt Coca Cola",
+    "unit": "lon"
+   },
+   {
+    "code": "DU009",
+    "name": "Nước ngọt Sprite",
+    "unit": "lon"
+   }
+  ],
+  "NVL||Nam Việt Sin": [
+   {
+    "code": "NVLK049",
+    "name": "Dầu OLITA PLUS",
+    "unit": "can"
+   }
+  ],
+  "NVL||Khánh Hân": [
+   {
+    "code": "NVL067",
+    "name": "Sườn chìa",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL087",
+    "name": "Xương ống nóng",
+    "unit": "kg"
+   }
+  ],
+  "NVL||NS Kiên Long": [
+   {
+    "code": "NVL025",
+    "name": "Đậu đen",
+    "unit": "kg"
+   }
+  ],
+  "VTTH||Ngọc Oanh": [
+   {
+    "code": "VTTH003",
+    "name": "Nước Đá",
+    "unit": "Bao"
+   }
+  ],
+  "CCDC||CÔNG TY TNHH SẢN XUẤT CƠ KHÍ XUẤT NHẬP KHẨU PHƯỚC THỊNH TIẾN": [
+   {
+    "code": "CCDC00020",
+    "name": "Bạt nhựa 0.38 x 60420D",
+    "unit": "m"
+   }
+  ],
+  "NVL||An Phát Thành": [
+   {
+    "code": "NVLK049",
+    "name": "Dầu OLITA PLUS",
+    "unit": "can"
+   }
+  ],
+  "NVL||Tuấn Thanh": [
+   {
+    "code": "NVL067",
+    "name": "Sườn chìa",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL087",
+    "name": "Xương ống nóng",
+    "unit": "kg"
+   }
+  ],
+  "NVL||Minh Trí": [
+   {
+    "code": "NVL014",
+    "name": "Cá thác lác",
+    "unit": "kg"
+   }
+  ],
+  "CCDC||Nhựa Tốt": [
+   {
+    "code": "CCDC01029",
+    "name": "Sóng bít nhà hàng 1T5",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0193",
+    "name": "Thùng rác 120DL1",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC006",
+    "name": "THÙNG RÁC 660 LÍT",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0196",
+    "name": "Thùng rác công cộng HT 3 sao 90L nắp kín không bánh xe",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0230",
+    "name": "Thùng rác đạp 60L-Lá.",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0195",
+    "name": "Thùng rác đạp nhỏ-Xám",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC0192",
+    "name": "Thùng rác INT-250-GT",
+    "unit": "Cái"
+   },
+   {
+    "code": "CCDC01111",
+    "name": "Sóng bít 1 T9",
+    "unit": "Túi"
+   }
+  ],
+  "VTTH||CÔNG TY TNHH SẢN XUẤT THƯỢNG NGUYÊN": [
+   {
+    "code": "VTTH018",
+    "name": "Lõi 45cmx500 mango",
+    "unit": "cây"
+   }
+  ],
+  "NVL||Hướng Dương": [
+   {
+    "code": "NVL005",
+    "name": "Bún",
+    "unit": "kg"
+   }
+  ],
+  "CCDC||Wood one": [
+   {
+    "code": "CCDC0112",
+    "name": "Hộp khăn giấy gỗ",
+    "unit": "Cái"
+   }
+  ],
+  "VTTH||Huy Hòa": [
+   {
+    "code": "VTTH003",
+    "name": "Nước Đá",
+    "unit": "Bao"
+   }
+  ],
+  "NVL||Phương Dung": [
+   {
+    "code": "NVL005",
+    "name": "Bún",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL014",
+    "name": "Cá thác lác",
+    "unit": "kg"
+   }
+  ],
+  "NVL||Cát Tiên": [
+   {
+    "code": "NVL067",
+    "name": "Sườn chìa",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL087",
+    "name": "Xương ống nóng",
+    "unit": "kg"
+   }
+  ],
+  "NVL||Liên An": [
+   {
+    "code": "NVL067",
+    "name": "Sườn chìa",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL087",
+    "name": "Xương ống nóng",
+    "unit": "kg"
+   }
+  ],
+  "NVL||Lộc Thảo Phát": [
+   {
+    "code": "NVLK029",
+    "name": "Nước tương",
+    "unit": "Chai"
+   },
+   {
+    "code": "NVLK037",
+    "name": "tương cà cholimex 270g",
+    "unit": "Chai"
+   },
+   {
+    "code": "NVLK040",
+    "name": "tương ớt cholimex 270g",
+    "unit": "Chai"
+   },
+   {
+    "code": "NVLK016",
+    "name": "Hạt nêm Knorr gói 5kg",
+    "unit": "Gói"
+   },
+   {
+    "code": "NVL003",
+    "name": "Mì Gói",
+    "unit": "Gói"
+   },
+   {
+    "code": "NVLK005",
+    "name": "Bột ngọt ajinomoto 5kg",
+    "unit": "kg"
+   },
+   {
+    "code": "NVLK009",
+    "name": "Đường phèn",
+    "unit": "kg"
+   },
+   {
+    "code": "NVLK025",
+    "name": "Muối tinh iod",
+    "unit": "kg"
+   }
+  ],
+  "Drink||Hoàng Đào": [
+   {
+    "code": "DU001",
+    "name": "Bia Ken (Lùn) 250ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU003",
+    "name": "Bia Sài Gòn Xanh",
+    "unit": "lon"
+   }
+  ],
+  "NVL||Thành Phát": [
+   {
+    "code": "NVL067",
+    "name": "Sườn chìa",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL087",
+    "name": "Xương ống nóng",
+    "unit": "kg"
+   }
+  ],
+  "VTTH||Paper Store": [
+   {
+    "code": "VTTH040",
+    "name": "Giấy in bill",
+    "unit": "cuộn"
+   }
+  ],
+  "NVL||Đồng Xanh": [
+   {
+    "code": "NVL051",
+    "name": "Nấm đông cô",
+    "unit": "Gói"
+   },
+   {
+    "code": "NVL002",
+    "name": "Bồ ngót",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL005",
+    "name": "Bún",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL017",
+    "name": "Cải thảo",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL019",
+    "name": "Chanh không hạt",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL021",
+    "name": "Củ cải trắng",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL022",
+    "name": "Củ gừng",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL028",
+    "name": "Đọt khổ qua rừng",
+    "unit": "kg"
+   },
+   {
+    "code": "NVLK010",
+    "name": "Đường sạch Cô Ba 1kg (Xanh lá)",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL033",
+    "name": "Hành lá",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL035",
+    "name": "Hành phi",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL036",
+    "name": "Hành tây",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL037",
+    "name": "Hành tím củ",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL090",
+    "name": "Khổ qua bào",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL040",
+    "name": "Khổ qua rừng",
+    "unit": "kg"
+   },
+   {
+    "code": "NVLK025",
+    "name": "Muối tinh iod",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL047",
+    "name": "Mướp hương",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL048",
+    "name": "Nấm bạch tuyết gói 1kg",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL049",
+    "name": "Nấm bào ngư xám",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL053",
+    "name": "Nấm đùi gà baby",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL056",
+    "name": "Ngò rí",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL058",
+    "name": "Ớt hiểm đỏ",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL066",
+    "name": "Sả cây",
+    "unit": "kg"
+   },
+   {
+    "code": "NVLK032",
+    "name": "Sâm nấu nước mát",
+    "unit": "kg"
+   },
+   {
+    "code": "NVLK034",
+    "name": "Tiêu xay",
+    "unit": "kg"
+   }
+  ],
+  "VTTH||HBCO": [
+   {
+    "code": "VTTH005",
+    "name": "Nước tẩy nvs",
+    "unit": "Chai"
+   }
+  ],
+  "NVL||Tiến Phát": [
+   {
+    "code": "NVLK049",
+    "name": "Dầu OLITA PLUS",
+    "unit": "can"
+   }
+  ],
+  "NVL||CÔNG TY TNHH THUỶ HẢI SẢN TRƯƠNG HUY": [
+   {
+    "code": "NVL014",
+    "name": "Cá thác lác",
+    "unit": "kg"
+   }
+  ],
+  "Drink||Huỳnh Huy": [
+   {
+    "code": "DU011",
+    "name": "Nước suối Dasani",
+    "unit": "Chai"
+   },
+   {
+    "code": "DU007",
+    "name": "Nước Ngọt Coca Cola",
+    "unit": "lon"
+   }
+  ],
+  "Drink||Thảo Tiên": [
+   {
+    "code": "DU011",
+    "name": "Nước suối Dasani",
+    "unit": "Chai"
+   },
+   {
+    "code": "DU001",
+    "name": "Bia Ken (Lùn) 250ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU002",
+    "name": "Bia Ken Bạc (Cao) 330ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU003",
+    "name": "Bia Sài Gòn Xanh",
+    "unit": "lon"
+   },
+   {
+    "code": "DU004",
+    "name": "Bia Tiger Bạc (Cao) 330ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU006",
+    "name": "Bia Tiger Nâu 330ml",
+    "unit": "lon"
+   },
+   {
+    "code": "DU007",
+    "name": "Nước Ngọt Coca Cola",
+    "unit": "lon"
+   },
+   {
+    "code": "DU005",
+    "name": "Nước ngọt Sprite",
+    "unit": "lon"
+   },
+   {
+    "code": "DU009",
+    "name": "Nước ngọt Sprite",
+    "unit": "lon"
+   }
+  ],
+  "VTTH||Hoàng Kim Tín": [
+   {
+    "code": "VTTH034",
+    "name": "Nước lau sàn",
+    "unit": "can"
+   },
+   {
+    "code": "VTTH006",
+    "name": "Nước rửa chén",
+    "unit": "can"
+   },
+   {
+    "code": "VTTH005",
+    "name": "Nước tẩy nvs",
+    "unit": "Chai"
+   }
+  ],
+  "VTTH||Phú Thịnh": [
+   {
+    "code": "VTTH003",
+    "name": "Nước Đá",
+    "unit": "Bao"
+   }
+  ],
+  "NVL||Đệ Nhất": [
+   {
+    "code": "NVL084",
+    "name": "Xương ống lạnh",
+    "unit": "kg"
+   }
+  ],
+  "VTTH||Nam Sơn": [
+   {
+    "code": "VTTH001",
+    "name": "Gas lớn",
+    "unit": "Bình"
+   }
+  ],
+  "NVL||Kim Anh": [
+   {
+    "code": "NVL067",
+    "name": "Sườn chìa",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL087",
+    "name": "Xương ống nóng",
+    "unit": "kg"
+   }
+  ],
+  "NVL||Quang Tính": [
+   {
+    "code": "NVL043",
+    "name": "La hán quả",
+    "unit": "trái"
+   }
+  ],
+  "VTTH||Trung Tiến": [
+   {
+    "code": "VTTH023",
+    "name": "Bao tay y tế",
+    "unit": "bịch"
+   },
+   {
+    "code": "VTTH028",
+    "name": "Ống hút",
+    "unit": "bịch"
+   },
+   {
+    "code": "VTTH019",
+    "name": "Hút P6 đen sư tử",
+    "unit": "cây"
+   },
+   {
+    "code": "VTTH018",
+    "name": "Lõi 45cmx500 mango",
+    "unit": "cây"
+   },
+   {
+    "code": "VTTH016",
+    "name": "Chai sâm 370",
+    "unit": "Chai"
+   },
+   {
+    "code": "VTTH035",
+    "name": "TĂM HỘP",
+    "unit": "Hộp"
+   },
+   {
+    "code": "VTTH036",
+    "name": "Bao rác đen",
+    "unit": "kg"
+   },
+   {
+    "code": "VTTH037",
+    "name": "Bao tay nữ rin",
+    "unit": "kg"
+   },
+   {
+    "code": "VTTH020",
+    "name": "Bọc đen đẹp 60",
+    "unit": "kg"
+   },
+   {
+    "code": "VTTH041",
+    "name": "BỌC XỐP RIN (26 TRẮNG GAI)",
+    "unit": "kg"
+   },
+   {
+    "code": "VTTH015",
+    "name": "PE6X12",
+    "unit": "kg"
+   },
+   {
+    "code": "VTTH026",
+    "name": "Thun loại trung",
+    "unit": "kg"
+   },
+   {
+    "code": "VTTH022",
+    "name": "ZIP bạc 22x32",
+    "unit": "kg"
+   },
+   {
+    "code": "VTTH021",
+    "name": "ZIP bạc 25x35",
+    "unit": "kg"
+   }
+  ],
+  "VTTH||NPP MINH THẢO": [
+   {
+    "code": "VTTH005",
+    "name": "Nước tẩy nvs",
+    "unit": "Chai"
+   }
+  ],
+  "NVL||Song Phương": [
+   {
+    "code": "NVL067",
+    "name": "Sườn chìa",
+    "unit": "kg"
+   }
+  ],
+  "NVL||Kim Ngân": [
+   {
+    "code": "NVL067",
+    "name": "Sườn chìa",
+    "unit": "kg"
+   },
+   {
+    "code": "NVL087",
+    "name": "Xương ống nóng",
+    "unit": "kg"
+   }
+  ]
+ }
+}
