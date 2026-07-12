@@ -7,14 +7,12 @@
  ],
  "cat_to_ncc": {
   "VTTH": [
-   "CÔNG TY TNHH SẢN XUẤT THƯỢNG NGUYÊN",
    "GAS NĂM SAO",
    "HBCO",
    "Hoàng Kim Tín",
    "Huy Hòa",
    "Hạnh Phúc",
    "Minh Tuệ",
-   "NPP MINH THẢO",
    "Nam Sơn",
    "Namilux",
    "Nano",
@@ -27,8 +25,6 @@
   ],
   "Drink": [
    "Coca",
-   "CÔNG TY TNHH DTPT TMDV  TUẤN PHONG",
-   "CÔNG TY TNHH ĐT VÀ PHÁT TRIỂN TÂM TÍN NGHĨA",
    "GAS NĂM SAO",
    "Hoàng Đào",
    "Huỳnh Huy",
@@ -37,10 +33,11 @@
    "Ngân Thy",
    "Sơn Bích",
    "Thái Thịnh",
-   "Thảo Tiên"
+   "Thảo Tiên",
+   "Tuấn Phong",
+   "Tín Nghĩa"
   ],
   "CCDC": [
-   "CÔNG TY TNHH SẢN XUẤT CƠ KHÍ XUẤT NHẬP KHẨU PHƯỚC THỊNH TIẾN",
    "Mega Eco",
    "Minh Tuệ",
    "Namilux",
@@ -51,9 +48,8 @@
   "NVL": [
    "An Phát Thành",
    "CRAFTSMANSHIP",
-   "CÔNG TY HÀ THANH",
-   "CÔNG TY TNHH THUỶ HẢI SẢN TRƯƠNG HUY",
    "Cát Tiên",
+   "Hà Thanh",
    "Hưng Thịnh",
    "Hướng Dương",
    "Khánh Hân",
@@ -70,6 +66,7 @@
    "Song Phương",
    "Thành Phát",
    "Tiến Phát",
+   "Trương Huy",
    "Tuấn Thanh",
    "Vĩnh Tân",
    "Yến Phát",
@@ -148,7 +145,7 @@
     "unit": "lon"
    }
   ],
-  "NVL||CÔNG TY HÀ THANH": [
+  "NVL||Hà Thanh": [
    {
     "code": "NVLK049",
     "name": "Dầu OLITA PLUS",
@@ -579,7 +576,7 @@
     "unit": "Bình"
    }
   ],
-  "Drink||CÔNG TY TNHH ĐT VÀ PHÁT TRIỂN TÂM TÍN NGHĨA": [
+  "Drink||Tín Nghĩa": [
    {
     "code": "DU001",
     "name": "Bia Ken (Lùn) 250ml",
@@ -606,7 +603,7 @@
     "unit": "lon"
    }
   ],
-  "Drink||CÔNG TY TNHH DTPT TMDV  TUẤN PHONG": [
+  "Drink||Tuấn Phong": [
    {
     "code": "DU001",
     "name": "Bia Ken (Lùn) 250ml",
@@ -811,13 +808,6 @@
     "unit": "Bao"
    }
   ],
-  "CCDC||CÔNG TY TNHH SẢN XUẤT CƠ KHÍ XUẤT NHẬP KHẨU PHƯỚC THỊNH TIẾN": [
-   {
-    "code": "CCDC00020",
-    "name": "Bạt nhựa 0.38 x 60420D",
-    "unit": "m"
-   }
-  ],
   "NVL||An Phát Thành": [
    {
     "code": "NVLK049",
@@ -884,13 +874,6 @@
     "code": "CCDC01111",
     "name": "Sóng bít 1 T9",
     "unit": "Túi"
-   }
-  ],
-  "VTTH||CÔNG TY TNHH SẢN XUẤT THƯỢNG NGUYÊN": [
-   {
-    "code": "VTTH018",
-    "name": "Lõi 45cmx500 mango",
-    "unit": "cây"
    }
   ],
   "NVL||Hướng Dương": [
@@ -1164,7 +1147,7 @@
     "unit": "can"
    }
   ],
-  "NVL||CÔNG TY TNHH THUỶ HẢI SẢN TRƯƠNG HUY": [
+  "NVL||Trương Huy": [
    {
     "code": "NVL014",
     "name": "Cá thác lác",
@@ -1357,13 +1340,6 @@
     "code": "VTTH021",
     "name": "ZIP bạc 25x35",
     "unit": "kg"
-   }
-  ],
-  "VTTH||NPP MINH THẢO": [
-   {
-    "code": "VTTH005",
-    "name": "Nước tẩy nvs",
-    "unit": "Chai"
    }
   ],
   "NVL||Song Phương": [
