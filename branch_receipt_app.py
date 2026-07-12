@@ -258,6 +258,7 @@ photo = st.file_uploader(
 )
 
 if st.button("✅ Gửi chứng từ", type="primary"):
+    print("[DEBUG] Đã bấm nút Gửi chứng từ", flush=True)
     errors = []
     if not submitted_by.strip():
         errors.append("Chưa nhập tên người nhập.")
@@ -265,21 +266,32 @@ if st.button("✅ Gửi chứng từ", type="primary"):
     if not valid_items:
         errors.append("Cần ít nhất 1 mặt hàng có chọn mã hàng và số lượng > 0.")
 
+    print(f"[DEBUG] errors={errors}, valid_items={valid_items}", flush=True)
+
     if errors:
         for e in errors:
             st.error(e)
     else:
         try:
+            print("[DEBUG] Bắt đầu try block", flush=True)
             with st.spinner("Đang lưu chứng từ..."):
+                print("[DEBUG] Gọi get_google_client()", flush=True)
                 gc = get_google_client()
+                print("[DEBUG] get_google_client() xong", flush=True)
                 sheet_id, imgbb_api_key = get_sheet_id_and_imgbb_key()
+                print(f"[DEBUG] sheet_id={sheet_id[:8]}..., có imgbb_key={bool(imgbb_api_key)}", flush=True)
                 ws = get_worksheet(gc, sheet_id)
+                print("[DEBUG] get_worksheet() xong", flush=True)
 
                 photo_url = ""
                 if photo is not None:
+                    print("[DEBUG] Bắt đầu upload ảnh lên ImgBB", flush=True)
                     photo_bytes = photo.read()
                     filename = f"{authenticated_branch}_{ncc_name}_{receipt_date}_{uuid.uuid4().hex[:6]}.jpg"
                     photo_url = upload_photo_to_imgbb(imgbb_api_key, photo_bytes, filename)
+                    print("[DEBUG] Upload ảnh xong:", photo_url, flush=True)
+                else:
+                    print("[DEBUG] Không có ảnh, bỏ qua upload", flush=True)
 
                 now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 for it in valid_items:
@@ -298,12 +310,16 @@ if st.button("✅ Gửi chứng từ", type="primary"):
                         "submitted_by": submitted_by.strip(),
                         "submitted_at": now_str,
                     }
+                    print("[DEBUG] Chuẩn bị append_receipt_row:", row, flush=True)
                     append_receipt_row(ws, row)
+                    print("[DEBUG] append_receipt_row xong", flush=True)
 
+            print("[DEBUG] Toàn bộ khối try thành công, chuẩn bị hiện success", flush=True)
             st.success(f"Đã gửi {len(valid_items)} dòng chứng từ cho {ncc_name} — chi nhánh {authenticated_branch}.")
             st.session_state.receipt_items = [{"code": None, "qty": 0.0}]
             st.rerun()
         except Exception as e:
+            print(f"[DEBUG] LỖI trong try block: {repr(e)}", flush=True)
             st.error(f"⚠️ Có lỗi xảy ra khi lưu chứng từ, vui lòng thử lại hoặc báo P.MH. Chi tiết lỗi (cho việc debug): {e}")
 
 st.markdown("---")
