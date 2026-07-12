@@ -103,7 +103,7 @@ def get_worksheet(gc, sheet_id):
         ws = sh.worksheet(SHEET_TAB_NAME)
         existing_header = ws.row_values(1)
         if existing_header != SHEET_HEADERS:
-            ws.update("A1", [SHEET_HEADERS])
+            ws.update(values=[SHEET_HEADERS], range_name="A1")
     except gspread.WorksheetNotFound:
         ws = sh.add_worksheet(title=SHEET_TAB_NAME, rows=1000, cols=len(SHEET_HEADERS))
         ws.append_row(SHEET_HEADERS)
