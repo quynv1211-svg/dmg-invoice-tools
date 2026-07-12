@@ -1,7 +1,7 @@
 """
 DMG — Branch Receipt App (Phase 1)
 Chi nhánh nhập: NCC, ngày, mặt hàng, số lượng nhận, ảnh giấy giao nhận.
-Dữ liệu ghi vào Google Sheet (tab 'branch_receipts'), ảnh lưu Google Drive.
+Dữ liệu ghi vào Google Sheet (tab 'branch_receipts'), ảnh lưu qua ImgBB (dịch vụ ảnh miễn phí).
 
 Cách chạy local:
     pip install -r requirements.txt
@@ -10,9 +10,10 @@ Cách chạy local:
 Cách cấu hình (BẮT BUỘC trước khi chạy):
     1. Tạo 1 Google Sheet mới, đặt tên tùy ý, tạo sẵn 1 tab tên "branch_receipts"
        với dòng tiêu đề: record_id | branch_code | ncc_name | date | item | qty_received | photo_url | submitted_by | submitted_at
-    2. Tạo 1 Google Cloud Service Account, bật Google Sheets API + Google Drive API,
+    2. Tạo 1 Google Cloud Service Account, bật Google Sheets API,
        tải file credentials JSON, share quyền Editor Sheet trên cho email service account đó.
-    3. Deploy lên Streamlit Cloud: dán nội dung JSON vào mục Settings > Secrets theo định dạng TOML bên dưới:
+    3. Đăng ký lấy API Key miễn phí tại https://api.imgbb.com/ (đăng nhập bằng Google/email, vào mục "About" > "API" để lấy key).
+    4. Deploy lên Streamlit Cloud: dán nội dung JSON vào mục Settings > Secrets theo định dạng TOML bên dưới:
 
         [gcp_service_account]
         type = "service_account"
@@ -25,9 +26,10 @@ Cách cấu hình (BẮT BUỘC trước khi chạy):
 
         [app]
         sheet_id = "DÁN_ID_GOOGLE_SHEET_CỦA_BẠN_VÀO_ĐÂY"
-        drive_folder_id = "DÁN_ID_FOLDER_GOOGLE_DRIVE_ĐỂ_LƯU_ẢNH"
+        imgbb_api_key = "DÁN_API_KEY_IMGBB_VÀO_ĐÂY"
 
     Khi chạy local (không dùng Streamlit Cloud), có thể thay st.secrets bằng đọc file
+
     service_account.json trực tiếp — xem phần "LOCAL DEV MODE" bên dưới.
 """
 
@@ -35,12 +37,11 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, date
 import uuid
-import io
+import base64
+import requests
 
 import gspread
 from google.oauth2.service_account import Credentials
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseUpload
 
 # ============ CẤU HÌNH ============
 BRANCHES = ["CN1", "CN2 - Gò Vấp", "CN3 - Q12", "CN4", "CN5", "CN6", "CN7"]
@@ -50,13 +51,12 @@ SHEET_HEADERS = ["record_id", "branch_code", "ncc_name", "date", "item",
 
 SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive.file",
 ]
 
 
 @st.cache_resource
-def get_google_clients():
-    """Khởi tạo kết nối Google Sheets + Drive từ Streamlit Secrets."""
+def get_google_client():
+    """Khởi tạo kết nối Google Sheets từ Streamlit Secrets."""
     try:
         creds_dict = dict(st.secrets["gcp_service_account"])
         creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
@@ -65,16 +65,15 @@ def get_google_clients():
         creds = Credentials.from_service_account_file("service_account.json", scopes=SCOPES)
 
     gc = gspread.authorize(creds)
-    drive_service = build("drive", "v3", credentials=creds)
-    return gc, drive_service
+    return gc
 
 
-def get_sheet_id_and_folder():
+def get_sheet_id_and_imgbb_key():
     try:
-        return st.secrets["app"]["sheet_id"], st.secrets["app"]["drive_folder_id"]
+        return st.secrets["app"]["sheet_id"], st.secrets["app"]["imgbb_api_key"]
     except Exception:
-        # ---- LOCAL DEV MODE: điền trực tiếp 2 ID này khi test trên máy ----
-        return "DÁN_SHEET_ID_KHI_TEST_LOCAL", "DÁN_DRIVE_FOLDER_ID_KHI_TEST_LOCAL"
+        # ---- LOCAL DEV MODE: điền trực tiếp 2 giá trị này khi test trên máy ----
+        return "DÁN_SHEET_ID_KHI_TEST_LOCAL", "DÁN_IMGBB_API_KEY_KHI_TEST_LOCAL"
 
 
 def get_worksheet(gc, sheet_id):
@@ -87,18 +86,19 @@ def get_worksheet(gc, sheet_id):
     return ws
 
 
-def upload_photo_to_drive(drive_service, folder_id, file_bytes, filename, mime_type):
-    file_metadata = {"name": filename, "parents": [folder_id]}
-    media = MediaIoBaseUpload(io.BytesIO(file_bytes), mimetype=mime_type, resumable=False)
-    uploaded = drive_service.files().create(
-        body=file_metadata, media_body=media, fields="id"
-    ).execute()
-    file_id = uploaded["id"]
-    # Cho phép xem qua link (không public toàn bộ Drive, chỉ file này)
-    drive_service.permissions().create(
-        fileId=file_id, body={"role": "reader", "type": "anyone"}
-    ).execute()
-    return f"https://drive.google.com/file/d/{file_id}/view"
+def upload_photo_to_imgbb(api_key, file_bytes, filename):
+    """Upload ảnh lên ImgBB (dịch vụ ảnh miễn phí), trả về URL công khai của ảnh."""
+    b64_image = base64.b64encode(file_bytes).decode("utf-8")
+    resp = requests.post(
+        "https://api.imgbb.com/1/upload",
+        data={"key": api_key, "image": b64_image, "name": filename},
+        timeout=30,
+    )
+    resp.raise_for_status()
+    result = resp.json()
+    if not result.get("success"):
+        raise RuntimeError(f"ImgBB upload thất bại: {result}")
+    return result["data"]["url"]
 
 
 def append_receipt_row(ws, row: dict):
@@ -174,13 +174,13 @@ with st.form("receipt_form", clear_on_submit=True):
                 st.error(e)
         else:
             with st.spinner("Đang lưu chứng từ..."):
-                gc, drive_service = get_google_clients()
-                sheet_id, folder_id = get_sheet_id_and_folder()
+                gc = get_google_client()
+                sheet_id, imgbb_api_key = get_sheet_id_and_imgbb_key()
                 ws = get_worksheet(gc, sheet_id)
 
                 photo_bytes = photo.read()
                 filename = f"{branch_code}_{ncc_name}_{receipt_date}_{uuid.uuid4().hex[:6]}.jpg"
-                photo_url = upload_photo_to_drive(drive_service, folder_id, photo_bytes, filename, photo.type)
+                photo_url = upload_photo_to_imgbb(imgbb_api_key, photo_bytes, filename)
 
                 now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 for it in valid_items:
@@ -208,8 +208,8 @@ if st.button("🔄 Tải lại danh sách"):
     st.rerun()
 
 try:
-    gc, drive_service = get_google_clients()
-    sheet_id, folder_id = get_sheet_id_and_folder()
+    gc = get_google_client()
+    sheet_id, imgbb_api_key = get_sheet_id_and_imgbb_key()
     ws = get_worksheet(gc, sheet_id)
     recent = load_recent_receipts(ws, view_branch)
     if recent.empty:
